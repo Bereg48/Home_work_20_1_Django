@@ -1,11 +1,13 @@
 from django.db import models
 
 NULLABLE = {'blank': True, 'null': True}
+nl = '\n'
 
 
 class Category(models.Model):
     name = models.CharField(max_length=150, verbose_name='наименование')
     description = models.TextField(**NULLABLE, verbose_name='описание')
+
     # created_at = models.CharField(max_length=150, verbose_name='вносимое поле')
 
     def __str__(self):
@@ -26,7 +28,7 @@ class Product(models.Model):
     category = models.CharField(max_length=150, verbose_name='категория')
 
     def __str__(self):
-        return f'{self.name} ({self.category})'
+        return f'{self.name} ({self.description})'
 
     class Meta:
         verbose_name = 'Продукт'
