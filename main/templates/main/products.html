@@ -1,0 +1,18 @@
+{% extends 'main/base.html' %}
+{% block content %}
+{% load my_tags %}
+{% for object in object_list %}
+<div class="col-md-4">
+    <div class="card mb-4 box-shadow">
+        <img src="{{ object.photo|mediapath }}"/>
+        <div class="card-body">
+            <h5 class="card-title">{{ object.name }}</h5>
+            <h6 class="card-title">Описание</h6>
+            <p class="card-text">{{ object.description|truncatewords:4 }}</p>
+        </div>
+        <a href="{% url 'main:products' object.pk %}" type="button" class="btn btn-sm btn-outline-secondary">К
+            продуктам</a>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
