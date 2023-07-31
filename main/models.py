@@ -8,7 +8,6 @@ class Category(models.Model):
     name = models.CharField(max_length=150, verbose_name='наименование')
     description = models.TextField(**NULLABLE, verbose_name='описание')
 
-
     def __str__(self):
         return f'{self.name} ({self.description})'
 
@@ -26,7 +25,7 @@ class Product(models.Model):
     last_change = models.DateField(**NULLABLE, verbose_name='дата последнего изменения')
     category = models.ForeignKey('Category', on_delete=models.SET_NULL, verbose_name='категория', **NULLABLE)
     publication_attribute = models.BooleanField(default=True)
-    number_views = models.IntegerField(default=0, verbose_name=' number_views')
+    number_views = models.IntegerField(default=0, verbose_name='number_views')
 
     def __str__(self):
         return f'{self.name} ({self.description}), {self.number_views}'
@@ -36,4 +35,14 @@ class Product(models.Model):
         verbose_name_plural = 'Продукты'
 
 
+class Version(models.Model):
+    product = models.ForeignKey('Product', on_delete=models.SET_NULL, verbose_name='продукт', **NULLABLE)
+    name_version = models.CharField(max_length=150, verbose_name='название версии')
+    name_current_version = models.BooleanField(default=True, verbose_name='признак текущей версии')
 
+    def __str__(self):
+        return f'{self.name_version} ({self.name_current_version})'
+
+    class Meta:
+        verbose_name = 'Версия'
+        verbose_name_plural = 'Версии'

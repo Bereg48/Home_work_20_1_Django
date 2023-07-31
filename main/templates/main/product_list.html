@@ -1,6 +1,12 @@
 {% extends 'main/base.html' %}
 
 {% block content %}
+
+
+<div class="col-12 mb-5">
+    <a class="btn btn-primary" href="{% url 'main:create_products' %}"
+       class="btn btn-success">Добавить продукт</a>
+</div>
 {% load my_tags %}
 
 {% for object in object_list %}
@@ -12,9 +18,14 @@
             <h5 class="card-title">{{ object.name }}</h5>
             <h6 class="card-title">Описание</h6>
             <p class="card-text">{{ object.description|truncatewords:4 }}</p>
+            <h6 class="card-title">Версии</h6>
+            <p class="card-text">{{ view.all_version }}</p>
             <div class="btn-group">
                 <a href="{% url 'main:product_card' object.pk %}"
                    class="btn btn-success">Подробнее</a>
+                <a href="{% url 'main:update_products' object.pk %}"
+                   class="btn btn-success">Редактировние</a>
+
 
             </div>
         </div>
