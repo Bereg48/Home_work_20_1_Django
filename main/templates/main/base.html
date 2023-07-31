@@ -31,6 +31,10 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'main:product' %}">Продукты</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url 'blog:list' %}">Продуктовые блоги</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -69,7 +73,7 @@
         <p class="float-right">
             <a href="#">Back to top</a>
         </p>
-        <p>&copy; 2023 - { % now 'Y' %}</p>
+        <p>&copy; 2023 - {% now "d.\ m.\ Y" %} </p>
     </div>
 </footer>
 

@@ -1,43 +1,54 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView
 
 from main.models import Category, Product
 
 
-def category(request):
-    category_list = Category.objects.all()
-    context = {
-        'object_list': category_list,
-        'title': 'Категории'
-    }
-
-    return render(request, "main/category.html", context)
+class CategoryListView(ListView):
+    model = Category
 
 
-def product(request):
-    product_list = Product.objects.all()
-    context = {
-        'product_list': product_list,
-        'title': 'Продукты'
-    }
-
-    return render(request, "main/product.html", context)
+class ProductListView(ListView):
+    model = Product
 
 
-def products_categories(request, pk):
-    products_item = Category.objects.get(pk=pk)
-    context = {
-        'product_list': Product.objects.filter(category=pk),
-        'title': f'Продукты из выбранной категории {products_item.name}'
-    }
+class ProductCategoryListView(ListView):
+    model = Product
 
-    return render(request, "main/products_categories.html", context)
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(category=self.kwargs.get('pk'))
+        return queryset
+
+    def get_context_data(self, *args, **kwargs):
+        context_data = super().get_context_data(*args, **kwargs)
+        products_item = Category.objects.get(pk=self.kwargs.get('pk'))
+        context_data['title'] = f'Продукты из выбранной категории {products_item.name}'
+        return context_data
 
 
-def product_card(request, name):
-    products_item = Product.objects.get(name=name)
-    context = {
-        'product_list': Product.objects.filter(name=name),
-        'title': f'Полное описание продукта {products_item.name}'
-    }
+class ProductCardListView(ListView):
+    model = Product
+    template_name = 'main/blogentry_detail.html'
 
-    return render(request, "main/product_card.html", context)
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(pk=self.kwargs.get('pk'))
+        return queryset
+
+
+# class BlogEntryDetailView(DetailView):
+#     model = BlogEntry
+#     # template_name = 'main/product_card.html'
+
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        self.object.number_views += 1
+        self.object.save()
+        return self.object
+
+# class ProductCreateView(CreateView):
+#     model = Product
+#     fields = ('name', 'price', 'photo', 'category',)
+#     success_url = reverse_lazy('main:product')
