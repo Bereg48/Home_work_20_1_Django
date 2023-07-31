@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<div class="col-12-md-6" >
+<div class="col-12 md-5" >
     <a class="btn btn-outline-primary" href="{% url 'blog:create' %}">Добавить блог</a>
 </div>
 {% for object in object_list %}
@@ -20,6 +20,11 @@
                     <a href="{% url 'blog:delete' object.pk %}" type="button"
                        class="btn btn-danger">Delete</a>
             </div>
+            {% if object.publication_attribute %}
+            <a class="btn btn-warning" href="{% url 'blog:toggle_activity' object.pk %}">Negative</a>
+            {% else %}
+            <a class="btn btn-success" href="{% url 'blog:toggle_activity' object.pk %}">Positive</a>
+            {% endif %}
         </div>
     </div>
 </div>
