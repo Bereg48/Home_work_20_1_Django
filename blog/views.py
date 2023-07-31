@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 from pytils.translit import slugify
@@ -8,7 +8,7 @@ from blog.models import BlogEntru
 
 class BlogEntruCreateView(CreateView):
     model = BlogEntru
-    fields = ('title', 'preview', 'creation_date',)
+    fields = ('title', 'preview', 'content', 'creation_date',)
     success_url = reverse_lazy('blog:list')
 
     def form_valid(self, form):
@@ -22,6 +22,7 @@ class BlogEntruCreateView(CreateView):
 class BlogEntruUpdateView(UpdateView):
     model = BlogEntru
     fields = ('title', 'preview', 'content', 'creation_date',)
+
     # success_url = reverse_lazy('blog:list')
 
     def form_valid(self, form):
@@ -59,3 +60,15 @@ class BlogEntruDetailView(DetailView):
 class BlogEntruDeleteView(DeleteView):
     model = BlogEntru
     success_url = reverse_lazy('blog:list')
+
+
+def publication_attribute(request, pk):
+    blog_item = get_object_or_404(BlogEntru, pk=pk)
+    if blog_item.publication_attribute:
+        blog_item.publication_attribute = False
+    else:
+        blog_item.publication_attribute = True
+
+    blog_item.save()
+
+    return redirect(reverse('blog:list'))

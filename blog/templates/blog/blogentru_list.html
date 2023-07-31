@@ -20,6 +20,11 @@
                     <a href="{% url 'blog:delete' object.pk %}" type="button"
                        class="btn btn-danger">Delete</a>
             </div>
+            {% if object.publication_attribute %}
+            <a class="btn btn-warning" href="{% url 'blog:publication_attribute' object.pk %}">Negative</a>
+            {% else %}
+            <a class="btn btn-success" href="{% url 'blog:publication_attribute' object.pk %}">Positive</a>
+            {% endif %}
         </div>
     </div>
 </div>
