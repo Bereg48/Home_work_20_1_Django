@@ -13,11 +13,12 @@
             <p class="card-text">{{ object.description}}</p>
             <h6 class="card-title">Цена</h6>
             <p class="card-text">{{ object.price}} руб.</p>
-            <h6 class="card-title">Цена</h6>
-            <p class="card-text">{{ object.price}} руб.</p>
-            {% for item in version %}
-        {{ item.name_version }}
-    {% endfor %}
+            <h6 class="card-title">Версия</h6>
+            {% for version in object.product_ver.all %}
+            {% if version.name_current_version %}
+            <b>Наименование версии:</b> {{ version.name_version }}
+            {% endif %}
+            {% endfor %}
         </div>
     </div>
 </div>

@@ -20,6 +20,13 @@ class ProductListView(ListView):
     def all_version():
         return Version.objects.all()
 
+    # def get_context_data(self, *args, **kwargs):
+    #     context_data = super().get_context_data(**kwargs)
+    #     context_data['version_name'] = Version.objects.all()
+    # #     # products_item = Category.objects.get(pk=self.kwargs.get('pk'))
+    # #     # context_data['title'] = f'Продукты из выбранной категории {products_item.name}'
+    #     return context_data
+
 
 
 

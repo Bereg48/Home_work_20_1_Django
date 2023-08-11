@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 
+from django.core.mail import send_mail
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -24,7 +26,11 @@ SECRET_KEY = 'django-insecure-jpp!w2awn^7(+nk5!6jlil=dal96&o)gqom2wl$q^*113s32m6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# EMAIL_PASSWORD = 'ajbdiwlexeneineu'
+
 ALLOWED_HOSTS = []
+
+AUTH_USER_MODEL = 'users.User'
 
 # Application definition
 
@@ -37,6 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main',
     'blog',
+    'users',
+
 ]
 
 MIDDLEWARE = [
@@ -75,7 +83,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'main_2',
+        'NAME': 'main',
         'USER': 'postgres',
         'HOST': '127.0.0.1',  # Адрес, на котором развернут сервер БД
         'PORT': 5432,  # Порт, на котором работает сервер БД
@@ -106,7 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ru-ru'
 
-TIME_ZONE = 'Europe/Moscow'
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
@@ -129,3 +137,16 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/'
+
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'andreyanovi@yandex.ru'
+EMAIL_HOST_PASSWORD = 'epfahifksrcbcivo'
+DEFAULT_FROM_EMAIL = 'andreyanovi@yandex.ru'
+EMAIL_USE_SSL = True
+EMAIL_USE_TLS = False
+
+send_mail
