@@ -34,14 +34,20 @@ class Product(models.Model):
         verbose_name = 'Продукт'
         verbose_name_plural = 'Продукты'
 
+    @property
+    def active_version(self):
+        return self.product_ver.filter(name_current_version=True).exists()
+
 
 class Version(models.Model):
-    product = models.ForeignKey('Product', on_delete=models.SET_NULL, verbose_name='продукт', **NULLABLE)
+    product = models.ForeignKey('Product', on_delete=models.CASCADE, verbose_name='product', related_name='product_ver')
+
     name_version = models.CharField(max_length=150, verbose_name='название версии')
-    name_current_version = models.BooleanField(default=True, verbose_name='признак текущей версии')
+    number_version = models.IntegerField(default=1, verbose_name='number_version')
+    name_current_version = models.BooleanField(default=False, verbose_name='name_current_version')
 
     def __str__(self):
-        return f'{self.name_version} ({self.name_current_version})'
+        return f'{self.name_version} ({self.name_current_version}), ({self.number_version})'
 
     class Meta:
         verbose_name = 'Версия'

@@ -35,6 +35,15 @@
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="{% url 'blog:list' %}">Продуктовые блоги</a>
                     </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url 'users:logout' %}">Выход</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url 'users:login' %}">Вход</a>
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
