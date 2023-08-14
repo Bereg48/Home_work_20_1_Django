@@ -11,11 +11,10 @@
                 <form method="post">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <button type="submit" class="btn btn-success">Вход</button>
+                    <button type="submit" class="btn btn-success">Регистрация</button>
                 </form>
             </div>
             <div class="card-footer">
-                <a href="{% url 'users:password_reset' %}" class="btn btn-danger">Восстановить пароль</a>
             </div>
         </div>
     </div>
