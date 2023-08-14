@@ -26,26 +26,25 @@ class LogoutView(BaseLogoutView):
 
 
 class EmailVerify(View):
-    pass
-    # def get(self, request, uidb64, token):
-    #     user = self.get_user(uidb64)
-    #
-    #     if user is not None and token_generator.check_token(user, token):
-    #         user.email_verify = True
-    #         login(request, user)
-    #         return redirect('users:login')
-    #     return redirect('users:invalid_verify')
-    #
-    #
-    #
-    # @staticmethod
-    # def get_user(uidb64):
-    #     try:
-    #         uid = urlsafe_base64_decode(uidb64).decode()
-    #         user = User.objects.get(pk=uid)
-    #     except (TypeError, ValueError, OverflowError, User.DoesNotExist, ValidationError):
-    #         user = None
-    #     return user
+    def get(self, request, uidb64, token):
+        user = self.get_user(uidb64)
+
+        if user is not None and token_generator.check_token(user, token):
+            user.email_verify = True
+            login(request, user)
+            return redirect('users:login')
+        return redirect('users:invalid_verify')
+
+
+
+    @staticmethod
+    def get_user(uidb64):
+        try:
+            uid = urlsafe_base64_decode(uidb64).decode()
+            user = User.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist, ValidationError):
+            user = None
+        return user
 
 
 class RegisterView(CreateView):
@@ -54,13 +53,13 @@ class RegisterView(CreateView):
     success_url = reverse_lazy('users:login')
     template_name = 'users/register.html'
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         context = {
             'form': UserForm()
         }
         return render(request, self.template_name, context)
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         form = UserForm(request.POST)
 
         if form.is_valid():

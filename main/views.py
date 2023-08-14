@@ -1,5 +1,4 @@
-
-
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.forms import inlineformset_factory
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
@@ -19,15 +18,6 @@ class ProductListView(ListView):
     @staticmethod
     def all_version():
         return Version.objects.all()
-
-    # def get_context_data(self, *args, **kwargs):
-    #     context_data = super().get_context_data(**kwargs)
-    #     context_data['version_name'] = Version.objects.all()
-    # #     # products_item = Category.objects.get(pk=self.kwargs.get('pk'))
-    # #     # context_data['title'] = f'Продукты из выбранной категории {products_item.name}'
-    #     return context_data
-
-
 
 
 class ProductCategoryListView(ListView):
@@ -61,15 +51,17 @@ class ProductCardListView(ListView):
         return self.object
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Product
+    permission_required = 'orm.add_product'
     form_class = ProductForm
     success_url = reverse_lazy('main:product')
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
+    permission_required = 'orm.change_product'
     success_url = reverse_lazy('main:product')
 
     def get_context_data(self, **kwargs):

@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
@@ -6,9 +7,10 @@ from pytils.translit import slugify
 from blog.models import BlogEntru
 
 
-class BlogEntruCreateView(CreateView):
+class BlogEntruCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = BlogEntru
     fields = ('title', 'preview', 'content', 'creation_date',)
+    permission_required = 'orm.add_product'
     success_url = reverse_lazy('blog:list')
 
     def form_valid(self, form):
@@ -19,8 +21,9 @@ class BlogEntruCreateView(CreateView):
         return super().form_valid(form)
 
 
-class BlogEntruUpdateView(UpdateView):
+class BlogEntruUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = BlogEntru
+    permission_required = 'orm.change_product'
     fields = ('title', 'preview', 'content', 'creation_date',)
 
 
