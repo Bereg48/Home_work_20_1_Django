@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from main.models import Category, Product, Version
+from users.models import User
 
 
 @admin.register(Category)
@@ -19,3 +20,10 @@ class ProductAdmin(admin.ModelAdmin):
 class VersionAdmin(admin.ModelAdmin):
     list_display = ('name_current_version', 'name_version',)
     list_filter = ('name_current_version',)
+
+
+@admin.register(User)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ('email', 'phone', 'country', 'avatar', 'email_verify')
+    list_filter = ('country',)
+    search_fields = ('country', 'email',)

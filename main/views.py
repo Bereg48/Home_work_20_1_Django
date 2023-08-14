@@ -53,7 +53,7 @@ class ProductCardListView(ListView):
 
 class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Product
-    permission_required = 'orm.add_product'
+    permission_required = 'main.add_product'
     form_class = ProductForm
     success_url = reverse_lazy('main:product')
 
@@ -61,7 +61,7 @@ class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
 class ProductUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
-    permission_required = 'orm.change_product'
+    permission_required = 'main.change_product'
     success_url = reverse_lazy('main:product')
 
     def get_context_data(self, **kwargs):

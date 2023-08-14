@@ -4,8 +4,10 @@
 
 
 <div class="col-12 mb-5">
+    {% if user.is_superuser %}
     <a class="btn btn-primary" href="{% url 'main:create_products' %}"
        class="btn btn-success">Добавить продукт</a>
+    {% endif %}
 </div>
 {% load my_tags %}
 
@@ -21,8 +23,10 @@
             <div class="btn-group">
                 <a href="{% url 'main:product_card' object.pk %}"
                    class="btn btn-success">Подробнее</a>
+                {% if user.is_superuser %}
                 <a href="{% url 'main:update_products' object.pk %}"
                    class="btn btn-success">Редактировние</a>
+                {% endif %}
             </div>
         </div>
     </div>
