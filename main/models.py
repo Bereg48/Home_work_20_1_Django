@@ -1,5 +1,7 @@
 from django.db import models
 
+from users.models import User
+
 NULLABLE = {'blank': True, 'null': True}
 nl = '\n'
 
@@ -24,6 +26,7 @@ class Product(models.Model):
     birth_day = models.DateField(**NULLABLE, verbose_name='дата создания')
     last_change = models.DateField(**NULLABLE, verbose_name='дата последнего изменения')
     category = models.ForeignKey('Category', on_delete=models.SET_NULL, verbose_name='категория', **NULLABLE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='пользователь')
     publication_attribute = models.BooleanField(default=True)
     number_views = models.IntegerField(default=0, verbose_name='number_views')
 
