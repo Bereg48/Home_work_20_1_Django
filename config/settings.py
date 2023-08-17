@@ -10,12 +10,16 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import os
 from pathlib import Path
+from dotenv import load_dotenv
 
 from django.core.mail import send_mail
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+load_dotenv(BASE_DIR/'.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -30,8 +34,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -41,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "debug_toolbar",
     'main',
     'blog',
     'users',
@@ -55,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -132,6 +136,9 @@ STATICFILES_DIRS = (
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = BASE_DIR / 'media'
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -153,3 +160,13 @@ EMAIL_USE_SSL = True
 EMAIL_USE_TLS = False
 
 LOGIN_URL = '/users/'
+
+CACHES_ENABLED = os.getenv('CACHES_ENABLED') == 'True'
+
+if CACHES_ENABLED:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": os.getenv('CACHES_LOCATION'),
+        }
+    }

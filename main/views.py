@@ -1,4 +1,6 @@
+from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.core.cache import cache
 from django.forms import inlineformset_factory
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
@@ -7,38 +9,20 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
 from main.form import ProductForm, VersionForm
 from main.models import Category, Product, Version
+from main.services import get_cached_subject_for_category
 
 
 class CategoryListView(LoginRequiredMixin, ListView):
     model = Category
 
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data['subject_list'] = get_cached_subject_for_category()
+        return context_data
+
 
 class ProductListView(LoginRequiredMixin, ListView):
     model = Product
-
-    # def get_queryset(self):
-    #     return super().get_queryset().filter(
-    #         category=self.kwargs.get('pk')
-    #     )
-
-    # def get_context_data(self, *args, **kwargs):
-    #     context_data = super().get_context_data(*args, **kwargs)
-    #     category_item = Category.objects.get(pk=self.kwargs.get('pk'))
-    #     context_data['category_id'] = category_item.pk
-    #     context_data['title'] = f'Продукты из выбранной категории {category_item.name}'
-    #     return context_data
-    # def get_context_data(self, *args, **kwargs):
-    #     context_data = super().get_context_data(*args, **kwargs)
-    #     category_item = Category.objects.get(pk=self.kwargs.get('pk'))
-    #     context_data['category'] = category_item.category
-    #     context_data['title'] = f'Продукты из выбранной категории {category_item.name}'
-    #     return context_data
-
-    # def get_object(self, queryset=None):
-    #     self.object = super().get_object(queryset)
-    #     if self.object.owner != self.request.user:
-    #         raise Http404
-    #     return self.object
 
     @staticmethod
     def all_version():
